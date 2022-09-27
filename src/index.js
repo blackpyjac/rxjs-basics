@@ -1,23 +1,17 @@
-import { Observable } from "rxjs";
+import { of, from } from "rxjs";
+import { map } from "rxjs/operators";
 
-const observable = new Observable((subscriber) => {
-/*     subscriber.next('Hello world')
-    subscriber.error('Errror')
-    subscriber.next('test')
+const observable = of(1,2,3,4,5)
+/* const numbersWithSymbol = observable.pipe(
+    map((value)=>`$${value}`)
+) */
 
-    subscriber.complete()
-    subscriber.next('test') */
-    
-})
-
-observable.subscribe({
-    next: (value) => {
-        console.log(value)
+const subscrition = observable.subscribe({
+    next(value){
+        console.log(value);
     },
-    complete: () =>{
-        console.log('complete called');
-    },
-    error: (err) =>{
-        console.error(err)
+    complete(){
+        console.log('complete');
     }
-})
+}
+)

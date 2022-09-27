@@ -1,0 +1,120 @@
+import { Observable } from "rxjs";
+
+const observable = new Observable((subscriber) => {
+/*     subscriber.next('Hello world')
+    subscriber.error('Errror')
+    subscriber.next('test')
+
+    subscriber.complete()
+    subscriber.next('test') */
+    //pushing asynchronous values
+    const id = setInterval(() => {
+        subscriber.next('test')
+        console.log('leak')
+    }, 1000);
+
+
+    return () => {
+        clearInterval(id)
+    }
+})
+
+const subscrition = observable.subscribe({
+    next: (value) => {
+        console.log(value)
+    },
+    complete: () =>{
+        console.log('complete called');
+    },
+    error: (err) =>{
+        console.error(err)
+    }
+})
+
+setTimeout(() => {
+    subscrition.unsubscribe()
+}, 4000);
+
+
+/* interval operator */
+
+import { interval } from "rxjs";
+
+const observable = interval(1000)
+
+const subscrition = observable.subscribe({
+    
+})
+/* timer operator */
+
+import { timer } from "rxjs";
+
+const observable = timer(0,1000)
+
+const subscrition = observable.subscribe(
+    console.log
+)
+
+/*
+DOM EVENT operator  
+*/
+
+import { fromEvent } from "rxjs";
+
+const observable = fromEvent(
+    document, 'click'
+)
+
+const subscrition = observable.subscribe(
+    console.log
+)
+
+// the of and from operator
+
+import { of } from "rxjs";
+
+const observable = of([1,2,3,4,5])
+
+const subscrition = observable.subscribe({
+    next(value){
+        console.log(value);
+    },
+    complete(){
+        console.log('complete');
+    }
+}
+)
+
+
+import { of, from } from "rxjs";
+
+const observable = from(fetch('https://jsonplaceholder.typicode.com/todos/1'))
+
+const subscrition = observable.subscribe({
+    next(value){
+        console.log(value);
+    },
+    complete(){
+        console.log('complete');
+    }
+}
+)
+
+
+import { of, from } from "rxjs";
+import { map } from "rxjs/operators";
+
+const observable = of(1,2,3,4,5)
+/* const numbersWithSymbol = observable.pipe(
+    map((value)=>`$${value}`)
+) */
+
+const subscrition = observable.subscribe({
+    next(value){
+        console.log(value);
+    },
+    complete(){
+        console.log('complete');
+    }
+}
+)
