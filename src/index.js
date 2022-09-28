@@ -1,15 +1,25 @@
-import { of, from, fromEvent } from "rxjs";
-import { map, pluck, filter } from "rxjs/operators";
+import { fromEvent, interval } from "rxjs";
+import { map, exhaustMap, take, tap } from "rxjs/operators";
+import { ajax } from "rxjs/ajax";
 /* keydown to know which key was pressed */
+
+const button = document.querySelector('#btn')
 const observable = fromEvent(
-    document, 'keydown'
+    button, 'click'
 ).pipe(
-    //map(event => event.code)
-   /*  pluck('code'),
-    filter(code => code ==='Space') */
-    map((event)=>{
-        return event.code ==='Space' ? event.code : null
-    })
+    exhaustMap(()=>{
+        return ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1').pipe(
+           
+            take(5),
+            tap({
+                complete(){
+                    console.log('inner observable completed');
+                }
+            })
+        )
+        /* ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1') */
+    }),
+    
 )
 
 const subscrition = observable.subscribe({
